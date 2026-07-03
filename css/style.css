@@ -263,7 +263,7 @@ body {
   letter-spacing: 0.05em;
   white-space: nowrap;
   flex-shrink: 0;
-  margin-bottom: 4px; /* Align slightly off the canvas bottom */
+  margin-bottom: 10px; /* Aligns baseline of text with visualizer baseline dots */
 }
 
 /* Bottom Row: Progress Timeline docked to very bottom of right panel */
