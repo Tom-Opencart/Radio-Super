@@ -103,7 +103,8 @@ function loadTrack(index) {
   
   // Set sources
   const fileUrl = track.file.startsWith('/') ? track.file.substring(1) : track.file;
-  audio.src = track.file.startsWith('http') ? track.file : `${API_BASE}/${fileUrl}`;
+  const prefix = API_BASE ? `${API_BASE}/` : '';
+  audio.src = track.file.startsWith('http') ? track.file : `${prefix}${fileUrl}`;
   // Dynamic parsing of artist and title from filename if not explicitly provided in metadata
   let artist = track.artist || '';
   let title = track.title || '';
@@ -350,10 +351,11 @@ function updateCoverImage(force = false) {
     const randomIndex = Math.floor(Math.random() * coverImages.length);
     const selectedImage = coverImages[randomIndex];
     const imageUrl = selectedImage.startsWith('/') ? selectedImage.substring(1) : selectedImage;
+    const prefix = API_BASE ? `${API_BASE}/` : '';
     // Append timestamp cache-buster to prevent browser caching of old images
     imageSrc = selectedImage.startsWith('http') 
       ? selectedImage 
-      : `${API_BASE}/${imageUrl}?t=${Date.now()}`;
+      : `${prefix}${imageUrl}?t=${Date.now()}`;
   } else {
     // Generate a beautiful generic cover if no images are uploaded
     const seed = Date.now() + Math.random().toString(36).substring(2, 5);
