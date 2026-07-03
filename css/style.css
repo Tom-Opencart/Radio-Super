@@ -1,4 +1,13 @@
 /* Reset & Global Styles */
+:root {
+  --bg-0: #080b14;
+  --bg-1: #0d1424;
+  --teal: #2c5364;
+  --plum: #4b3869;
+  --glow: #5f7f9e;
+  --line: rgba(180, 200, 220, 0.06);
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -7,7 +16,7 @@
 
 body {
   font-family: 'Outfit', sans-serif;
-  background-color: #04080e;
+  background-color: var(--bg-0);
   color: #ffffff;
   min-height: 100dvh;
   display: flex;
@@ -16,6 +25,135 @@ body {
   align-items: center;
   overflow: hidden;
   position: relative;
+}
+
+/* ===== Ambient Background - "Дыхание эфира" ===== */
+.radio-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(ellipse at 20% 15%, var(--bg-1) 0%, var(--bg-0) 55%);
+  isolation: isolate;
+  z-index: -1; /* Behind the player card */
+  overflow: hidden;
+}
+
+/* Subtle grid texture for depth */
+.radio-bg::before {
+  content: "";
+  position: absolute; 
+  inset: 0;
+  background-image:
+    linear-gradient(var(--line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--line) 1px, transparent 1px);
+  background-size: 64px 64px;
+  opacity: 0.5;
+  mask-image: radial-gradient(circle at 50% 40%, black 0%, transparent 75%);
+  -webkit-mask-image: radial-gradient(circle at 50% 40%, black 0%, transparent 75%);
+  z-index: 1;
+}
+
+/* Smooth drifting aurora-like blobs */
+.blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(70px);
+  mix-blend-mode: screen;
+  opacity: 0.55;
+  will-change: transform;
+}
+
+.blob.teal {
+  width: 46vw; 
+  height: 46vw;
+  left: -10%; 
+  top: 10%;
+  background: radial-gradient(circle at 30% 30%, var(--teal), transparent 70%);
+  animation: drift-a 26s ease-in-out infinite;
+}
+
+.blob.plum {
+  width: 38vw; 
+  height: 38vw;
+  right: -8%; 
+  top: 35%;
+  background: radial-gradient(circle at 60% 40%, var(--plum), transparent 70%);
+  animation: drift-b 32s ease-in-out infinite;
+}
+
+.blob.glow {
+  width: 30vw; 
+  height: 30vw;
+  left: 35%; 
+  bottom: -12%;
+  background: radial-gradient(circle at 50% 50%, var(--glow), transparent 72%);
+  opacity: 0.35;
+  animation: drift-c 40s ease-in-out infinite;
+}
+
+@keyframes drift-a {
+  0%   { transform: translate(0, 0) scale(1); }
+  50%  { transform: translate(6vw, 4vh) scale(1.12); }
+  100% { transform: translate(0, 0) scale(1); }
+}
+
+@keyframes drift-b {
+  0%   { transform: translate(0, 0) scale(1); }
+  50%  { transform: translate(-5vw, -6vh) scale(1.08); }
+  100% { transform: translate(0, 0) scale(1); }
+}
+
+@keyframes drift-c {
+  0%   { transform: translate(0, 0) scale(1); }
+  50%  { transform: translate(3vw, -3vh) scale(1.15); }
+  100% { transform: translate(0, 0) scale(1); }
+}
+
+/* Expanding "radio wave" rings */
+.waves {
+  position: absolute;
+  left: 50%; 
+  top: 50%;
+  width: 2px; 
+  height: 2px;
+  z-index: 2;
+}
+
+.wave-ring {
+  position: absolute;
+  left: 50%; 
+  top: 50%;
+  width: 10px; 
+  height: 10px;
+  border: 1px solid rgba(150, 190, 220, 0.18);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  animation: ring-out 8s cubic-bezier(0.2, 0.6, 0.3, 1) infinite;
+}
+
+.wave-ring:nth-child(2) { animation-delay: 2s; }
+.wave-ring:nth-child(3) { animation-delay: 4s; }
+.wave-ring:nth-child(4) { animation-delay: 6s; }
+
+@keyframes ring-out {
+  0%   { width: 10px; height: 10px; opacity: 0; }
+  15%  { opacity: 0.5; }
+  100% { width: 70vw; height: 70vw; opacity: 0; }
+}
+
+/* Vignette overlay to darken borders and highlight the player card */
+.vignette {
+  position: absolute; 
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 50%, transparent 40%, rgba(0, 0, 0, 0.55) 100%);
+  z-index: 3;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .blob, .wave-ring { animation: none !important; }
 }
 
 /* Screen reader only helper for SEO */
