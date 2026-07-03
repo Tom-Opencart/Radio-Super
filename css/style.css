@@ -204,6 +204,51 @@ body {
   max-width: 720px; /* Sleeker, wider horizontal banner */
 }
 
+/* Modern Editorial Header above Player Card */
+.player-header-title {
+  margin-bottom: 24px;
+  width: 100%;
+  padding-left: 2px;
+  animation: fadeInDown 1s ease-out;
+}
+
+.player-subtitle {
+  font-family: 'Outfit', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.3em;
+  color: rgba(232, 228, 220, 0.4);
+  display: block;
+  margin-bottom: 6px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.player-main-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: clamp(26px, 4vw, 36px);
+  font-weight: 300;
+  letter-spacing: 0.02em;
+  color: #efece5;
+  line-height: 1.2;
+}
+
+.player-author {
+  font-family: 'Outfit', sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  color: #00f2fe;
+  margin-left: 12px;
+  letter-spacing: 0.05em;
+  text-shadow: 0 0 10px rgba(0, 242, 254, 0.4);
+  vertical-align: middle;
+}
+
+@keyframes fadeInDown {
+  from { opacity: 0; transform: translateY(-12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
 .player-card {
   background: rgba(10, 23, 34, 0.45);
   backdrop-filter: blur(28px) saturate(180%);
