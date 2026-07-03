@@ -183,21 +183,11 @@ body {
   flex-shrink: 0;
 }
 
-.branding {
-  font-family: 'Outfit', sans-serif;
-  font-weight: 300;
-  font-size: 11px;
-  text-transform: uppercase;
-  letter-spacing: 0.22em;
-  color: rgba(0, 242, 254, 0.7);
-  text-shadow: 0 0 8px rgba(0, 242, 254, 0.3);
-}
-
-/* Round Play/Pause Button in Top Right corner next to music lab */
-.play-pause-circle-btn {
+/* Round Control Buttons (Prev, Play, Next) in Top Right corner */
+.control-circle-btn {
   background: transparent;
   border: none;
-  color: rgba(255, 255, 255, 0.75);
+  color: rgba(255, 255, 255, 0.7);
   cursor: pointer;
   width: 24px;
   height: 24px;
@@ -209,13 +199,13 @@ body {
   outline: none;
 }
 
-.play-pause-circle-btn:hover {
+.control-circle-btn:hover {
   color: #00f2fe;
   transform: scale(1.12);
   filter: drop-shadow(0 0 4px rgba(0, 242, 254, 0.6));
 }
 
-.play-pause-circle-btn:active {
+.control-circle-btn:active {
   transform: scale(0.92);
 }
 

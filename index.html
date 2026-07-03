@@ -38,13 +38,22 @@
       <!-- Right: Control and Info Panel -->
       <div class="control-panel">
         
-        <!-- Top Row: Artist Meta & Branding + Play/Pause Button -->
+        <!-- Top Row: Artist Meta & Play/Pause/Navigation -->
         <div class="panel-header">
           <span class="track-artist" id="trackArtist">VonnBoyd</span>
           <div class="branding-control-group">
-            <span class="branding">music lab</span>
             
-            <button id="playPauseBtn" class="play-pause-circle-btn" title="Play / Pause" aria-label="Play or Pause Track">
+            <!-- Previous Track Button -->
+            <button id="prevBtn" class="control-circle-btn" title="Previous Track" aria-label="Previous Track">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polygon points="15 8 10 12 15 16 15 8" fill="currentColor"></polygon>
+                <line x1="9" y1="8" x2="9" y2="16" stroke-linecap="round"></line>
+              </svg>
+            </button>
+            
+            <!-- Play/Pause Button -->
+            <button id="playPauseBtn" class="control-circle-btn play-pause" title="Play / Pause" aria-label="Play or Pause Track">
               <!-- Play Icon (Circle with Triangle) -->
               <svg id="playIcon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
                 <circle cx="12" cy="12" r="10"></circle>
@@ -57,13 +66,21 @@
                 <line x1="14" y1="15" x2="14" y2="9" stroke-linecap="round"></line>
               </svg>
             </button>
+
+            <!-- Next Track Button -->
+            <button id="nextBtn" class="control-circle-btn" title="Next Track" aria-label="Next Track">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polygon points="9 8 14 12 9 16 9 8" fill="currentColor"></polygon>
+                <line x1="15" y1="8" x2="15" y2="16" stroke-linecap="round"></line>
+              </svg>
+            </button>
+            
           </div>
         </div>
 
         <!-- Hidden controls to prevent JS reference errors -->
         <div class="hidden-controls" style="display: none;">
-          <button id="prevBtn"></button>
-          <button id="nextBtn"></button>
           <div id="progressHandle"></div>
         </div>
 
