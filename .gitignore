@@ -1,0 +1,15 @@
+# Ignore media files (they are too heavy for GitHub)
+music/*
+*.mp3
+*.mp4
+*.wav
+*.m4a
+*.ogg
+
+# System & IDE folders
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+node_modules/
+package-lock.json

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Super Radio Player</title>
+  <meta name="description" content="A beautiful premium radio music player with reactive frequency visualizer and dynamic background animations.">
+  <!-- Modern Premium Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+
+  <!-- Page Header for SEO -->
+  <header class="sr-only">
+    <h1>Radio Super - Premium Ambient Music Player</h1>
+  </header>
+
+  <!-- Main Player Container -->
+  <main class="player-wrapper">
+    <div class="player-card" id="playerCard">
+      
+      <!-- Left: Rotating Cover Art Panel -->
+      <div class="cover-panel" id="coverPanel">
+        <img id="coverImg1" class="cover-image active" src="images/cover1.png" alt="Music Cover Art 1">
+        <img id="coverImg2" class="cover-image" src="images/cover2.png" alt="Music Cover Art 2">
+        
+        <!-- Subtle playback indicator overlay on cover -->
+        <div class="playback-indicator" id="playbackIndicator">
+          <div class="pulse-ring"></div>
+          <div class="pulse-dot"></div>
+        </div>
+      </div>
+
+      <!-- Right: Control and Info Panel -->
+      <div class="control-panel">
+        
+        <!-- Top Row: Artist Meta & Branding + Play/Pause Button -->
+        <div class="panel-header">
+          <span class="track-artist" id="trackArtist">VonnBoyd</span>
+          <div class="branding-control-group">
+            <span class="branding">music lab</span>
+            
+            <button id="playPauseBtn" class="play-pause-circle-btn" title="Play / Pause" aria-label="Play or Pause Track">
+              <!-- Play Icon (Circle with Triangle) -->
+              <svg id="playIcon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polygon points="10 8 16 12 10 16 10 8" fill="currentColor"></polygon>
+              </svg>
+              <!-- Pause Icon (Circle with two bars, hidden by default) -->
+              <svg id="pauseIcon" class="hidden" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="10" y1="15" x2="10" y2="9" stroke-linecap="round"></line>
+                <line x1="14" y1="15" x2="14" y2="9" stroke-linecap="round"></line>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Hidden controls to prevent JS reference errors -->
+        <div class="hidden-controls" style="display: none;">
+          <button id="prevBtn"></button>
+          <button id="nextBtn"></button>
+          <div id="progressHandle"></div>
+        </div>
+
+        <!-- Middle Row: Track Title -->
+        <div class="panel-body">
+          <h2 class="track-title" id="trackTitle">Overcast</h2>
+        </div>
+
+        <!-- Lower Row: Visualizer and Time Display side-by-side -->
+        <div class="visualizer-row">
+          <div class="visualizer-container">
+            <canvas id="visualizerCanvas"></canvas>
+          </div>
+          <span class="time-display" id="timeDisplay">00:00 / 00:00</span>
+        </div>
+
+        <!-- Bottom Row: Progress docked at the very bottom edge of control-panel -->
+        <div class="progress-container" id="progressContainer">
+          <div class="progress-bar" id="progressBar"></div>
+        </div>
+
+      </div>
+
+      </div>
+    </div>
+    
+    <!-- Playlist side drawers or controls can go here in the future -->
+  </main>
+
+  <footer class="page-footer">
+    <p>Upload your MP3 tracks to the <code>music/</code> folder and images to <code>images/</code> to customize this player.</p>
+  </footer>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
