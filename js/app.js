@@ -83,6 +83,9 @@ async function initPlayer() {
       showEmptyState('Error loading playlist. Ensure playlist.json is generated or server is running.');
     }
   }
+  
+  // Start the visualizer loop immediately on load to draw standby waves/dots
+  drawVisualizer();
 }
 
 function showEmptyState(msg = 'No tracks found in the "music" folder. Drop some MP3s there!') {
@@ -193,8 +196,6 @@ function initAudio() {
   source = audioCtx.createMediaElementSource(audio);
   source.connect(analyser);
   analyser.connect(audioCtx.destination);
-  
-  drawVisualizer();
 }
 
 // Dynamic Canvas Visualizer Rendering
@@ -206,10 +207,10 @@ function drawVisualizer() {
   
   canvasCtx.clearRect(0, 0, width, height);
   
-  const bufferLength = analyser.frequencyBinCount;
+  const bufferLength = analyser ? analyser.frequencyBinCount : 128;
   const dataArray = new Uint8Array(bufferLength);
   
-  if (isPlaying) {
+  if (isPlaying && analyser) {
     analyser.getByteFrequencyData(dataArray);
   } else {
     // If paused, decay frequency levels back to zero smoothly
