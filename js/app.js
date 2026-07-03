@@ -104,8 +104,36 @@ function loadTrack(index) {
   // Set sources
   const fileUrl = track.file.startsWith('/') ? track.file.substring(1) : track.file;
   audio.src = track.file.startsWith('http') ? track.file : `${API_BASE}/${fileUrl}`;
-  trackArtist.textContent = track.artist || 'Unknown Artist';
-  trackTitle.textContent = track.title || track.filename;
+  // Dynamic parsing of artist and title from filename if not explicitly provided in metadata
+  let artist = track.artist || '';
+  let title = track.title || '';
+  
+  // Extract filename without path and extension
+  const filenameWithExt = track.filename || fileUrl.split('/').pop();
+  const cleanName = decodeURIComponent(filenameWithExt).replace(/\.[^/.]+$/, ""); // Remove extension (.mp3/.mp4)
+  
+  if (!artist || artist.toLowerCase() === 'unknown artist') {
+    // Check for "Artist - Title" or "Artist — Title" patterns
+    if (cleanName.includes(' - ')) {
+      const parts = cleanName.split(' - ');
+      artist = parts[0].trim();
+      title = parts.slice(1).join(' - ').trim();
+    } else if (cleanName.includes(' — ')) {
+      const parts = cleanName.split(' — ');
+      artist = parts[0].trim();
+      title = parts.slice(1).join(' — ').trim();
+    } else {
+      artist = 'Unknown Artist';
+      title = cleanName;
+    }
+  }
+  
+  if (!title) {
+    title = cleanName;
+  }
+  
+  trackArtist.textContent = artist;
+  trackTitle.textContent = title;
   
   // Set initial timeline and time indicator
   progressBar.style.width = '0%';
