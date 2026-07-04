@@ -108,7 +108,23 @@ $newPlaylist = [
     'images' => $images
 ];
 $jsonOptions = JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE;
-file_put_contents($playlistFile, json_encode($newPlaylist, $jsonOptions));
+$jsonContent = json_encode($newPlaylist, $jsonOptions);
+
+$writeSuccess = false;
+$writeError = '';
+
+if (file_exists($playlistFile) && !is_writable($playlistFile)) {
+    $writeError = 'Файл playlist.json заблокирован для записи. Установите права доступа (chmod) 666 или 777 на файл playlist.json на вашем сервере.';
+} elseif (!file_exists($playlistFile) && !is_writable(__DIR__)) {
+    $writeError = 'Директория audio/ заблокирована для записи. Не удалось создать playlist.json. Установите права (chmod) 777 на папку audio/ на вашем сервере.';
+} else {
+    $result = file_put_contents($playlistFile, $jsonContent);
+    if ($result === false) {
+        $writeError = 'Не удалось записать данные в playlist.json. Проверьте права доступа на сервере.';
+    } else {
+        $writeSuccess = true;
+    }
+}
 
 // ── 4. Output response ─────────────────────────────────────────────────────
 ?>
@@ -150,6 +166,18 @@ file_put_contents($playlistFile, json_encode($newPlaylist, $jsonOptions));
             font-size: 13px;
             font-weight: 600;
             margin-bottom: 20px;
+        }
+        .error-pill {
+            background: rgba(239, 68, 68, 0.15);
+            color: #ef4444;
+            padding: 10px 14px;
+            border-radius: 4px;
+            display: inline-block;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            line-height: 1.4;
+            border: 1px solid rgba(239, 68, 68, 0.3);
         }
         .stat {
             display: flex;
@@ -217,8 +245,13 @@ file_put_contents($playlistFile, json_encode($newPlaylist, $jsonOptions));
 </head>
 <body>
     <div class="card">
-        <h1>Плейлист обновлен!</h1>
-        <div class="success-pill">playlist.json успешно перезаписан</div>
+        <?php if ($writeSuccess): ?>
+            <h1>Плейлист обновлен!</h1>
+            <div class="success-pill">playlist.json успешно перезаписан</div>
+        <?php else: ?>
+            <h1 style="color: #ef4444;">Ошибка обновления!</h1>
+            <div class="error-pill"><?php echo htmlspecialchars($writeError); ?></div>
+        <?php endif; ?>
         
         <div class="stat">
             <div class="stat-item">
@@ -249,7 +282,7 @@ file_put_contents($playlistFile, json_encode($newPlaylist, $jsonOptions));
         </ul>
 
         <?php if (count($images) > 0): ?>
-            <div class="section-label">Обложки</div>
+            <div class=\"section-label\">Обложки</div>
             <ul>
                 <?php foreach ($images as $img): ?>
                     <li><span class="filename"><?php echo htmlspecialchars($img); ?></span></li>
@@ -257,7 +290,7 @@ file_put_contents($playlistFile, json_encode($newPlaylist, $jsonOptions));
             </ul>
         <?php endif; ?>
 
-        <a href="index.html" class="btn-back">&larr; Вернуться к плееру</a>
+        <a href="index.php" class="btn-back">&larr; Вернуться к плееру</a>
     </div>
 </body>
 </html>

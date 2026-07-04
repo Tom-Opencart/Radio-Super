@@ -1,136 +1,14 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Super Radio Player</title>
-  <meta name="description" content="A beautiful premium radio music player with reactive frequency visualizer and dynamic background animations.">
-  <!-- Modern Premium Typography -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css">
+  <meta http-equiv="refresh" content="0; url=index.php">
+  <script type="text/javascript">
+    window.location.replace("index.php");
+  </script>
+  <title>Redirecting...</title>
 </head>
 <body>
-  <!-- Animated Ambient Background - "Тихий эфир" -->
-  <div class="quiet-bg">
-    <div class="tone slate"></div>
-    <div class="tone taupe"></div>
-    <div class="tone violet"></div>
-
-    <div class="breath"></div>
-    <div class="sheen"></div>
-    <div class="grain"></div>
-    <div class="vignette"></div>
-  </div>
-
-  <!-- Page Header for SEO -->
-  <header class="sr-only">
-    <h1>Radio Super - Premium Ambient Music Player</h1>
-  </header>
-
-  <!-- Main Player Container -->
-  <main class="player-wrapper">
-    
-    <!-- Modern Editorial Header Title -->
-    <div class="player-header-title">
-      <span class="player-subtitle">ambient broadcasting</span>
-      <h1 class="player-main-title">Radio <span class="player-title-accent">Super</span> <span class="player-author">by Tom</span></h1>
-    </div>
-
-    <div class="player-card" id="playerCard">
-      
-      <!-- Left: Rotating Cover Art Panel -->
-      <div class="cover-panel" id="coverPanel">
-        <img id="coverImg1" class="cover-image active" src="images/cover1.png" alt="Music Cover Art 1">
-        <img id="coverImg2" class="cover-image" src="images/cover2.png" alt="Music Cover Art 2">
-        
-        <!-- Subtle playback indicator overlay on cover -->
-        <div class="playback-indicator" id="playbackIndicator">
-          <div class="pulse-ring"></div>
-          <div class="pulse-dot"></div>
-        </div>
-      </div>
-
-      <!-- Right: Control and Info Panel -->
-      <div class="control-panel">
-        
-        <!-- Top Row: Artist Meta & Play/Pause/Navigation -->
-        <div class="panel-header">
-          <span class="track-artist" id="trackArtist">VonnBoyd</span>
-          <div class="branding-control-group">
-            
-            <!-- Previous Track Button -->
-            <button id="prevBtn" class="control-circle-btn" title="Previous Track" aria-label="Previous Track">
-              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
-                <circle cx="12" cy="12" r="10"></circle>
-                <polygon points="15 8 10 12 15 16 15 8" fill="currentColor"></polygon>
-                <line x1="9" y1="8" x2="9" y2="16" stroke-linecap="round"></line>
-              </svg>
-            </button>
-            
-            <!-- Play/Pause Button -->
-            <button id="playPauseBtn" class="control-circle-btn play-pause" title="Play / Pause" aria-label="Play or Pause Track">
-              <!-- Play Icon (Circle with Triangle) -->
-              <svg id="playIcon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
-                <circle cx="12" cy="12" r="10"></circle>
-                <polygon points="10 8 16 12 10 16 10 8" fill="currentColor"></polygon>
-              </svg>
-              <!-- Pause Icon (Circle with two bars, hidden by default) -->
-              <svg id="pauseIcon" class="hidden" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
-                <circle cx="12" cy="12" r="10"></circle>
-                <line x1="10" y1="15" x2="10" y2="9" stroke-linecap="round"></line>
-                <line x1="14" y1="15" x2="14" y2="9" stroke-linecap="round"></line>
-              </svg>
-            </button>
-
-            <!-- Next Track Button -->
-            <button id="nextBtn" class="control-circle-btn" title="Next Track" aria-label="Next Track">
-              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
-                <circle cx="12" cy="12" r="10"></circle>
-                <polygon points="9 8 14 12 9 16 9 8" fill="currentColor"></polygon>
-                <line x1="15" y1="8" x2="15" y2="16" stroke-linecap="round"></line>
-              </svg>
-            </button>
-            
-          </div>
-        </div>
-
-        <!-- Hidden controls to prevent JS reference errors -->
-        <div class="hidden-controls" style="display: none;">
-          <div id="progressHandle"></div>
-        </div>
-
-        <!-- Middle Row: Track Title -->
-        <div class="panel-body">
-          <h2 class="track-title" id="trackTitle">Overcast</h2>
-        </div>
-
-        <!-- Lower Row: Visualizer and Time Display side-by-side -->
-        <div class="visualizer-row">
-          <div class="visualizer-container">
-            <canvas id="visualizerCanvas"></canvas>
-          </div>
-          <span class="time-display" id="timeDisplay">00:00 / 00:00</span>
-        </div>
-
-        <!-- Bottom Row: Progress docked at the very bottom edge of control-panel -->
-        <div class="progress-container" id="progressContainer">
-          <div class="progress-bar" id="progressBar"></div>
-        </div>
-
-      </div>
-
-      </div>
-    </div>
-    
-    <!-- Playlist side drawers or controls can go here in the future -->
-  </main>
-
-  <footer class="page-footer">
-    <p>Radio Super by Tom</p>
-  </footer>
-
-  <script src="js/app.js"></script>
+  If you are not redirected, <a href="index.php">click here</a>.
 </body>
 </html>

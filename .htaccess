@@ -1,0 +1,11 @@
+# Prioritize index.php over index.html
+DirectoryIndex index.php index.html
+
+# Prevent browser caching of playlist.json
+<Files "playlist.json">
+    <IfModule mod_headers.c>
+        Header set Cache-Control "max-age=0, no-cache, no-store, must-revalidate"
+        Header set Pragma "no-cache"
+        Header set Expires "Jan 01 1970 00:00:00 GMT"
+    </IfModule>
+</Files>

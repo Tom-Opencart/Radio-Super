@@ -28,10 +28,21 @@ const progressBar = document.getElementById('progressBar');
 const progressHandle = document.getElementById('progressHandle');
 const canvas = document.getElementById('visualizerCanvas');
 const canvasCtx = canvas.getContext('2d');
+const syncPlaylistBtn = document.getElementById('syncPlaylistBtn');
+
+// Volume Elements & State
+const volumeControlGroup = document.getElementById('volumeControlGroup');
+const volumeBtn = document.getElementById('volumeBtn');
+const volumeSlider = document.getElementById('volumeSlider');
+const volumeIcon = document.getElementById('volumeIcon');
+const muteIcon = document.getElementById('muteIcon');
+let currentVolume = 0.8;
+let isMuted = false;
 
 // Audio Element
 const audio = new Audio();
 audio.crossOrigin = 'anonymous'; // Critical for Web Audio API visualizer CORS
+audio.volume = currentVolume;
 
 // Web Audio API Variables
 let audioCtx = null;
@@ -53,7 +64,7 @@ resizeCanvas();
 async function initPlayer() {
   try {
     // Try loading static playlist.json (perfect for static production hosting)
-    const response = await fetch('playlist.json');
+    const response = await fetch('playlist.json?v=' + Date.now());
     const data = await response.json();
     
     playlist = data.tracks || [];
@@ -83,6 +94,9 @@ async function initPlayer() {
       showEmptyState('Error loading playlist. Ensure playlist.json is generated or server is running.');
     }
   }
+  
+  // Initialize Media Session handlers & system controls
+  initMediaSessionHandlers();
   
   // Start the visualizer loop immediately on load to draw standby waves/dots
   drawVisualizer();
@@ -136,6 +150,9 @@ function loadTrack(index) {
   trackArtist.textContent = artist;
   trackTitle.textContent = title;
   
+  // Calculate hover scroll parameters for long title
+  updateScrollParams();
+  
   // Set initial timeline and time indicator
   progressBar.style.width = '0%';
   progressHandle.style.left = '0%';
@@ -143,6 +160,9 @@ function loadTrack(index) {
   
   // Choose cover art
   updateCoverImage(true); // Forced instant/first cover image
+
+  // Sync Media Session Metadata
+  updateMediaSession(artist, title);
 
   // If already playing, trigger auto-play
   if (isPlaying) {
@@ -179,9 +199,16 @@ function playAudio() {
       if (audioCtx && audioCtx.state === 'suspended') {
         audioCtx.resume();
       }
+
+      // Sync Media Session state
+      if ('mediaSession' in navigator) {
+        navigator.mediaSession.playbackState = 'playing';
+      }
     })
     .catch(error => {
-      console.error('Error playing audio:', error);
+      console.error('Autoplay/playback blocked or failed:', error);
+      // Revert UI to paused state safely on autoplay blocking
+      pauseAudio();
     });
 }
 
@@ -194,6 +221,11 @@ function pauseAudio() {
   
   // Stop cover image rotation
   stopCoverRotation();
+
+  // Sync Media Session state
+  if ('mediaSession' in navigator) {
+    navigator.mediaSession.playbackState = 'paused';
+  }
 }
 
 function nextTrack() {
@@ -377,6 +409,7 @@ function updateCoverImage(force = false) {
   inactiveImg.onload = () => {
     activeImg.classList.remove('active');
     inactiveImg.classList.add('active');
+    updateMediaSession(trackArtist.textContent, trackTitle.textContent, imageSrc);
   };
 }
 
@@ -465,6 +498,165 @@ window.addEventListener('keydown', (e) => {
     audio.currentTime = Math.max(0, audio.currentTime - 5);
   }
 });
+
+// Volume Control Logic
+function handleVolumeInput(e) {
+  currentVolume = parseFloat(e.target.value);
+  if (currentVolume > 0) {
+    isMuted = false;
+    audio.muted = false;
+    volumeIcon.classList.remove('hidden');
+    muteIcon.classList.add('hidden');
+  } else {
+    isMuted = true;
+    audio.muted = true;
+    volumeIcon.classList.add('hidden');
+    muteIcon.classList.remove('hidden');
+  }
+  audio.volume = currentVolume;
+}
+
+function toggleMute() {
+  isMuted = !isMuted;
+  audio.muted = isMuted;
+  if (isMuted) {
+    volumeIcon.classList.add('hidden');
+    muteIcon.classList.remove('hidden');
+    volumeSlider.value = 0;
+  } else {
+    volumeIcon.classList.remove('hidden');
+    muteIcon.classList.add('hidden');
+    volumeSlider.value = currentVolume;
+  }
+}
+
+// Media Session API helper
+function updateMediaSession(artist, title, coverUrl = '') {
+  if ('mediaSession' in navigator) {
+    let src = coverUrl;
+    if (!src) {
+      const activeImg = coverImg1.classList.contains('active') ? coverImg1 : coverImg2;
+      src = activeImg.src || '';
+    }
+    src = src.split('?')[0]; // Remove cache bust parameter for system notification
+
+    navigator.mediaSession.metadata = new MediaMetadata({
+      title: title,
+      artist: artist,
+      album: 'Radio Super by Tom',
+      artwork: [
+        { src: src, sizes: '300x300', type: 'image/png' },
+        { src: src, sizes: '512x512', type: 'image/png' }
+      ]
+    });
+  }
+}
+
+function initMediaSessionHandlers() {
+  if ('mediaSession' in navigator) {
+    navigator.mediaSession.setActionHandler('play', playAudio);
+    navigator.mediaSession.setActionHandler('pause', pauseAudio);
+    navigator.mediaSession.setActionHandler('previoustrack', prevTrack);
+    navigator.mediaSession.setActionHandler('nexttrack', nextTrack);
+  }
+}
+
+// Volume Event Listeners
+volumeSlider.addEventListener('input', handleVolumeInput);
+volumeBtn.addEventListener('click', (e) => {
+  // Mobile check to expand/collapse slider instead of immediate mute
+  if (window.innerWidth <= 768) {
+    if (!volumeControlGroup.classList.contains('expanded')) {
+      e.stopPropagation();
+      volumeControlGroup.classList.add('expanded');
+      return;
+    }
+  }
+  toggleMute();
+});
+
+// Hide volume slider on mobile when tapping outside
+document.addEventListener('click', (e) => {
+  if (volumeControlGroup && !volumeControlGroup.contains(e.target)) {
+    volumeControlGroup.classList.remove('expanded');
+  }
+});
+
+// Sync/Scan Playlist via AJAX
+async function syncPlaylist() {
+  if (syncPlaylistBtn.classList.contains('spinning')) return;
+  
+  syncPlaylistBtn.classList.add('spinning');
+  syncPlaylistBtn.title = 'Сканирование...';
+  
+  try {
+    const prefix = API_BASE ? `${API_BASE}/` : '';
+    // Call the PHP generator script in the background
+    const response = await fetch(`${prefix}generate_playlist.php?t=${Date.now()}`);
+    const text = await response.text();
+    
+    // Check if the HTML response indicates success or error
+    if (response.ok && !text.includes('Ошибка обновления!') && !text.includes('заблокирован для записи')) {
+      // Re-initialize player to reload playlist.json dynamically
+      await initPlayer();
+      alert('Плейлист успешно обновлен!');
+    } else {
+      // Try to extract the error message from the response if any
+      const match = text.match(/<div class="error-pill">([\s\S]*?)<\/div>/);
+      const errMsg = match ? match[1].replace(/<[^>]*>/g, '').trim() : 'Не удалось обновить плейлист. Проверьте права на запись.';
+      alert('Ошибка: ' + errMsg);
+    }
+  } catch (error) {
+    console.error('Failed to sync playlist:', error);
+    alert('Не удалось связаться с сервером обновлений.');
+  } finally {
+    syncPlaylistBtn.classList.remove('spinning');
+    syncPlaylistBtn.title = 'Обновить плейлист (сканировать файлы)';
+  }
+}
+
+// Sync Event Listener
+if (syncPlaylistBtn) {
+  syncPlaylistBtn.addEventListener('click', syncPlaylist);
+}
+
+// Calculate scroll distance for long titles
+function updateScrollParams() {
+  const panelBody = document.querySelector('.panel-body');
+  if (!panelBody || !trackTitle) return;
+  
+  // Reset custom properties first
+  trackTitle.style.removeProperty('--scroll-dist');
+  trackTitle.style.removeProperty('--scroll-duration');
+  panelBody.classList.remove('can-scroll');
+  
+  // Temporarily force max-width and overflow to calculate real scroll width
+  const prevMaxWidth = trackTitle.style.maxWidth;
+  const prevOverflow = trackTitle.style.overflow;
+  trackTitle.style.maxWidth = 'none';
+  trackTitle.style.overflow = 'visible';
+  
+  const scrollWidth = trackTitle.scrollWidth;
+  const clientWidth = panelBody.clientWidth;
+  
+  // Restore original styles
+  trackTitle.style.maxWidth = prevMaxWidth;
+  trackTitle.style.overflow = prevOverflow;
+  
+  const scrollDistance = scrollWidth - clientWidth;
+  
+  if (scrollDistance > 0) {
+    panelBody.classList.add('can-scroll');
+    // Add 15px extra padding at the end of the scroll for aesthetic spacing
+    trackTitle.style.setProperty('--scroll-dist', `-${scrollDistance + 15}px`);
+    // Speed: 35 pixels per second (constant scrolling speed)
+    const duration = (scrollDistance + 15) / 35;
+    trackTitle.style.setProperty('--scroll-duration', `${duration}s`);
+  }
+}
+
+// Recalculate on window resize
+window.addEventListener('resize', updateScrollParams);
 
 // Initialize player on page load
 window.addEventListener('DOMContentLoaded', initPlayer);
