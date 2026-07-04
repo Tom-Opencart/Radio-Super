@@ -599,7 +599,6 @@ async function syncPlaylist() {
     if (response.ok && !text.includes('Ошибка обновления!') && !text.includes('заблокирован для записи')) {
       // Re-initialize player to reload playlist.json dynamically
       await initPlayer();
-      alert('Плейлист успешно обновлен!');
     } else {
       // Try to extract the error message from the response if any
       const match = text.match(/<div class="error-pill">([\s\S]*?)<\/div>/);
