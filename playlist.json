@@ -1,37 +1,40 @@
 {
-  "tracks": [
-    {
-      "file": "music/Chillout%20Music%20for%20Focus%20and%20Productivity.mp4",
-      "filename": "Chillout Music for Focus and Productivity.mp4",
-      "title": "Chillout Music for Focus and Productivity",
-      "artist": "Lofi Music Lab",
-      "duration": 5135.7431292517
-    },
-    {
-      "file": "music/Music%20for%20Comfort%20%26%20Concentration%20%E2%80%94%20Chillout%20Mix.mp4",
-      "filename": "Music for Comfort & Concentration — Chillout Mix.mp4",
-      "title": "Music for Comfort & Concentration",
-      "artist": "Ambient Chill",
-      "duration": 4628.851519274376
-    },
-    {
-      "file": "music/Music%20for%20Work%20%E2%80%94%20Chill%20Concentration%20Mix.mp4",
-      "filename": "Music for Work — Chill Concentration Mix.mp4",
-      "title": "Music for Work & Chill Concentration",
-      "artist": "Work & Study",
-      "duration": 3590.61768707483
-    },
-    {
-      "file": "music/%D0%91%D0%BE%D0%BB%D1%8C%D1%88%D0%B5%20%D0%B4%D0%B5%D0%BD%D0%B5%D0%B3.mp3",
-      "filename": "Больше денег.mp3",
-      "title": "Больше денег",
-      "artist": "INTERAURA",
-      "duration": 300.1991836734694
-    }
-  ],
-  "images": [
-    "images/cover1.png",
-    "images/cover2.png",
-    "images/cover3.png"
-  ]
+    "tracks": [
+        {
+            "file": "music/Chillout%20Music%20for%20Focus%20and%20Productivity.mp4",
+            "filename": "Chillout Music for Focus and Productivity.mp4",
+            "title": "Chillout Music for Focus and Productivity",
+            "artist": "Lofi Music Lab",
+            "duration": 5135.7431292517
+        },
+        {
+            "file": "music/Music%20for%20Comfort%20%26%20Concentration%20%E2%80%94%20Chillout%20Mix.mp4",
+            "filename": "Music for Comfort & Concentration — Chillout Mix.mp4",
+            "title": "Music for Comfort & Concentration",
+            "artist": "Ambient Chill",
+            "duration": 4628.851519274376
+        },
+        {
+            "file": "music/Music%20for%20Work%20%E2%80%94%20Chill%20Concentration%20Mix.mp4",
+            "filename": "Music for Work — Chill Concentration Mix.mp4",
+            "title": "Music for Work & Chill Concentration",
+            "artist": "Work & Study",
+            "duration": 3590.61768707483
+        },
+        {
+            "file": "music/%D0%91%D0%BE%D0%BB%D1%8C%D1%88%D0%B5%20%D0%B4%D0%B5%D0%BD%D0%B5%D0%B3.mp3",
+            "filename": "Больше денег.mp3",
+            "title": "Больше денег",
+            "artist": "INTERAURA",
+            "duration": 300.1991836734694
+        }
+    ],
+    "images": [
+        "images/cover1.png",
+        "images/cover2.png",
+        "images/cover3.png",
+        "images/cover4.png",
+        "images/cover5.png",
+        "images/cover6.png"
+    ]
 }
